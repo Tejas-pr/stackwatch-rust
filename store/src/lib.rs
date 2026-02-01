@@ -1,14 +1,8 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+use diesel::prelude::*;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+use crate::config::Config;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub mod schema;
+pub mod config;
+pub mod store;
+pub mod models;

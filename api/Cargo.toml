@@ -8,3 +8,4 @@ tokio = { version = "1", features = ["full"] }
 anyhow = "1"
 poem = "3.1.12"
 serde = { version = "1.0.228", features = ["derive"] }
+store = { path = "../store" }

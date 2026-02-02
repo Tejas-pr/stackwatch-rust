@@ -15,3 +15,8 @@ pub struct SignOutInput {
 pub struct SignUpUserOutput {
     pub id: String,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct GetWebsiteOutput {
+    pub url: String
+}

@@ -6,9 +6,8 @@ pub struct CreateWebsiteOutput {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct SignOutInput {
-    pub jwt: Option<String>,
-    pub error: Option<String>,
+pub struct SignInOuput {
+    pub jwt: String,
 }
 
 #[derive(Serialize, Deserialize)]

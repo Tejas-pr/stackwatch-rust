@@ -1,31 +1,26 @@
 use std::sync::{ Arc, Mutex };
 
-use poem::{ handler, web::{ Data, Json } };
+use poem::{ Error, handler, http::{ StatusCode }, web::{ Data, Json } };
 use store::store::Store;
 use crate::{
     request_inputs::{ SignInUserInput, SignUpUserInput },
-    request_outputs::{ SignOutInput, SignUpUserOutput },
+    request_outputs::{ SignInOuput, SignUpUserOutput },
 };
 
 #[handler]
 pub fn sign_in(
     Json(data): Json<SignInUserInput>,
     Data(s): Data<&Arc<Mutex<Store>>>
-) -> Json<SignOutInput> {
+) -> Result<Json<SignInOuput>, Error> {
     let mut locked_s = s.lock().unwrap();
-    let exists = locked_s.sign_in(data.username, data.password).expect("DB error during sign in");
 
-    if exists {
-        // TODO: generate jwt, status codes.
-        Json(SignOutInput {
-            jwt: Some("tejastejasteajs".to_string()),
-            error: None,
-        })
-    } else {
-        Json(SignOutInput {
-            jwt: None,
-            error: Some("Not authorized!!".to_string()),
-        })
+    match locked_s.sign_in(data.username, data.password) {
+        Ok(user_id) => {
+            Ok(Json(SignInOuput {
+                jwt: user_id,
+            }))
+        }
+        Err(_) => Err(Error::from_status(StatusCode::UNAUTHORIZED)),
     }
 }
 
